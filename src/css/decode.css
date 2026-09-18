@@ -1,0 +1,16 @@
+  /* decode*/
+  .decode-row{display:flex;gap:10px;flex-wrap:wrap;}
+  .decode-row input[type=text]{
+    flex:1;min-width:180px;
+    font-family:var(--mono);
+    font-size:15px;
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    color:var(--text);
+    border-radius:10px;
+    padding:13px 16px;
+  }
+  .decode-row input[type=text]:focus{outline:none;border-color:var(--border-strong);}
+  #decodeResult{margin-top:16px;font-family:var(--ui);font-size:13.5px;color:var(--text-tertiary);min-height:20px;line-height:1.6;word-break:break-word;}
+  #decodeResult.ok{color:var(--accent-muted);}
+  #decodeResult.err{color:var(--danger);}

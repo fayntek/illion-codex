@@ -1,0 +1,72 @@
+:root{
+    /* surfacs */
+    --bg:#0a0b0d;
+    --surface:#131519;
+    --surface-2:#191c21;
+    --surface-3:#20242b;
+
+    /* borders */
+    --border:rgba(255,255,255,0.07);
+    --border-strong:rgba(255,255,255,0.12);
+
+    /* text */
+    --text:#eceef1;
+    --text-secondary:#9aa0ac;
+    --text-tertiary:#666c78;
+
+    /* main accents technically the main theme */
+    --accent:#fff5d6;
+    --accent-muted:#c9c0a3;
+    --accent-ink:#161005;
+    --accent-hover:#fffaea;
+    --accent-wash:rgba(255,245,214,0.08);
+    --accent-wash-strong:rgba(255,245,214,0.14);
+	--accent-halo:rgba(255,245,214,0.18);
+    --accent-border:rgba(255,245,214,0.18);
+    --accent-selection:rgba(255,245,214,0.2);
+
+    /* unit category colorsfor units tens hundreds status badges */
+    --violet:#a79cd1;
+    --violet-wash:rgba(167,156,209,0.14);
+    --teal:#7bbcae;
+    --teal-wash:rgba(123,188,174,0.14);
+    --amber:#cca873;
+    --amber-wash:rgba(204,168,115,0.14);
+    --green:#7fd99a;
+    --green-wash:rgba(127,217,154,0.12);
+    --danger:#e08a7d;
+    --danger-wash:rgba(224,138,125,0.16);
+
+    /* font type */
+    --mono:'JetBrains Mono', monospace;
+    --display:'Fraunces', serif;
+    --ui:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+    /* elevation */
+    --shadow-sm:0 1px 2px rgba(0,0,0,0.4);
+    --shadow-md:0 4px 16px rgba(0,0,0,0.35), 0 1px 2px rgba(0,0,0,0.3);
+    --shadow-lg:0 12px 40px rgba(0,0,0,0.45), 0 2px 6px rgba(0,0,0,0.3);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--ui);
+    -webkit-font-smoothing:antialiased;
+    padding:0 0 100px 0;
+    line-height:1.5;
+	/*font-variant-numeric:tabular-nums;*/
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:0 24px;}
+  ::selection{background:var(--accent-selection);color:var(--accent);}
+
+  a:focus-visible, button:focus-visible, input:focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:2px;
+    border-radius:4px;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+  }

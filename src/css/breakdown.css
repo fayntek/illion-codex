@@ -1,0 +1,42 @@
+  /* individual rouned cards, each sized to its own content */
+  .breakdown{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-bottom:28px;
+  }
+  .chip{
+    font-family:var(--ui);
+    padding:14px 20px 13px;
+    min-width:150px;
+    text-align:left;
+    position:relative;
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    border-top:2px solid var(--border);
+    border-radius:10px;
+  }
+  .chip .k{display:block;font-size:10.5px;color:var(--text-tertiary);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;font-weight:600;}
+  .chip .v{
+    font-family:var(--mono);font-size:14px;color:var(--text);font-weight:500;
+    white-space:nowrap;line-height:1.45;
+  }
+  .chip.units{border-top-color:var(--violet);}
+  .chip.units .v{color:var(--violet);}
+  .chip.tens{border-top-color:var(--teal);}
+  .chip.tens .v{color:var(--teal);}
+  .chip.hundreds{border-top-color:var(--amber);}
+  .chip.hundreds .v{color:var(--amber);}
+  .chip.group{border-top-color:var(--violet);min-width:170px;}
+  .chip.group.final{border-top-color:var(--amber);}
+  .chip.group.final .v{color:var(--amber);}
+  .chip.group.zero{opacity:.45;}
+  .empty-chip{opacity:.3;}
+  .plus{display:none;}
+  .group-note{
+    width:100%;
+    font-family:var(--ui);
+    font-size:12.5px;
+    color:var(--text-tertiary);
+    margin-bottom:10px;
+  }

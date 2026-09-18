@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Bro, really? -->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⚙Fayntek's Illion Codex - Big Number Name &amp; Abbreviation Generator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/header.css">
+<link rel="stylesheet" href="css/panel.css">
+<link rel="stylesheet" href="css/controls.css">
+<link rel="stylesheet" href="css/breakdown.css">
+<link rel="stylesheet" href="css/results.css">
+<link rel="stylesheet" href="css/decode.css">
+<link rel="stylesheet" href="css/table.css">
+<link rel="stylesheet" href="css/badge.css">
+<link rel="stylesheet" href="css/footer.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="byline">a numerarium by <a href="https://github.com/fayntek" class="byline-link" target="_blank" rel="noopener noreferrer"><strong>⚙Fayntek</strong></a></div>
+    <h1>The <em>Illion</em> Codex</h1>
+    <p>Enter any serial number like 1, 999, 1,000,000, or absurdly larger one and get the full Latin name plus an incremental game style abbreviation. No scientific notation, ever.</p>
+  </header>
+
+
+
+
+
+  <section class="panel">
+    <div class="panel-title">Generator</div>
+    <div class="panel-heading">Serial number → name</div>
+    <div class="panel-sub">n → 10<sup>3n+3</sup> (short scale). Try typing 1000, 1000000, or 999999999.</div>
+
+    <div class="gen-controls">
+      <div class="slider-row">
+        <label>Serial number (slider covers between 1 - 999)</label>
+        <input type="range" id="serialSlider" min="1" max="999" value="123">
+      </div>
+      <div class="stepper">
+        <button id="decBtn" class="step-btn" aria-label="Decrement" type="button">−</button>
+        <input type="text" id="serialInput" class="num-input" value="123" inputmode="numeric" aria-label="Serial number">
+        <button id="incBtn" class="step-btn" aria-label="Increment" type="button">+</button>
+      </div>
+      <button id="randomBtn" type="button">Random</button>
+    </div>
+
+    <div class="quick-jumps">
+      <button data-jump="9" type="button">9</button>
+      <button data-jump="123" type="button">123</button>
+      <button data-jump="999" type="button">999</button>
+      <button data-jump="1000" type="button">1,000</button>
+      <button data-jump="1000000" type="button">1,000,000</button>
+      <button data-jump="1000000000000" type="button">10^12</button>
+    </div>
+
+    <div class="breakdown" id="breakdown"></div>
+
+    <div class="results">
+      <div class="result-card name">
+        <div class="label">
+          <span>Name <span class="badge" id="nameBadge">verified</span></span>
+          <button class="copy-btn" id="copyNameBtn" type="button">Copy</button>
+        </div>
+        <div class="name-text" id="outName">-</div>
+        <div class="sub" id="outPowers">-</div>
+      </div>
+      <div class="result-card abbr">
+        <div class="label">
+          <span>Abbreviation <span class="badge" id="abbrBadge">verified</span></span>
+          <button class="copy-btn" id="copyAbbrBtn" type="button">Copy</button>
+        </div>
+        <div class="stamp-wrap"><div class="stamp" id="outAbbr">-</div></div>
+        <div class="sub" id="outAbbrLong">long scale (-illiard): -</div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <span><span class="dot" style="background:var(--violet)"></span>Units prefix</span>
+      <span><span class="dot" style="background:var(--teal)"></span>Tens code</span>
+      <span><span class="dot" style="background:var(--amber)"></span>Hundreds code</span>
+    </div>
+  </section>
+
+
+
+
+
+
+  <section class="panel">
+    <div class="panel-title">Reverse Lookup</div>
+    <div class="panel-heading">Decode an abbreviation</div>
+    <div class="panel-sub">Works for both plain codes (e.g. TViC) and hyphenated multi-group codes (e.g. M-Ni for millinillion).</div>
+    <div class="decode-row">
+      <input type="text" id="decodeInput" placeholder="e.g. StSxC, TViC, NOg, M-Ni...">
+      <button class="primary" id="decodeBtn" type="button">Decode</button>
+    </div>
+    <div id="decodeResult"></div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-title">Reference</div>
+    <div class="panel-heading">Full list, 1-999</div>
+    <div class="panel-sub">The base table - every number above 999 is built recursively from these same building blocks. Click a row to load it above.</div>
+    <div class="table-controls">
+      <input type="text" id="tableSearch" placeholder="Filter by name, abbreviation, or serial no...">
+      <button id="csvBtn" type="button">Download CSV</button>
+    </div>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>No.</th><th>Name</th><th>10^ (US)</th><th>10^ (EU)</th><th>Abbr.</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="badge-row">
+    <a href="https://github.com/fayntek/illion-codex#license" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/github/license/fayntek/illion-codex?style=flat-square&color=fff5d6&labelColor=191c21" alt="GitHub license"></a>
+    <a href="https://github.com/fayntek/illion-codex/issues" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/github/issues/fayntek/illion-codex?style=flat-square&color=e08a7d&labelColor=191c21" alt="GitHub issues"></a>
+    <img src="https://visitor-badge.laobi.icu/badge?page_id=fayntek.illion-codex&left_text=Visits&left_color=%23191c21&right_color=%23013835&radius=0" alt="visitors">
+	<a href="https://discord.gg/k3qVkmXFAN" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/Discord-Join%20server-6976F2?style=for-the-badge&logo=discord&logoColor=white" alt="Join Discord"></a>
+  </div>
+
+  <footer>
+    US system (short scale): 10<sup>(3n+3)</sup> · EU system (long scale): 10<sup>(6n)</sup><br>
+    <strong>Serial 1 - 999</strong>: standard Conway-Wechsler names, abbreviations verified byte-for-byte against Swarm Simulator's real data (serial 1-89).<br>
+    <strong>Serial 1000+</strong>: names use the documented recursive Conway-Wechsler extension (mi-/bi-/tri-/nilli- linking roots - verified against the known reference "millinillion" = 10³⁰⁰³). Abbreviations beyond 999 are this tool's own consistent extension (chiliads joined with "-"), not from an official source.
+    <div class="sig">⚙Fayntek's Illion Codex - bookmark a number via the URL, it stays in the address bar.</div>
+  </footer>
+
+</div>
+<script src="js/naming_engine.js"></script>
+<script src="js/table_data.js"></script>
+<script src="js/panel_glow.js"></script>
+<script src="js/generator.js"></script>
+<script src="js/copy.js"></script>
+<script src="js/decode.js"></script>
+<script src="js/table.js"></script>
+<script src="js/csv_export.js"></script>
+</body>
+</html>

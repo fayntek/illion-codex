@@ -1,0 +1,3 @@
+  .badge-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:center;margin:24px 0;}
+  .badge-row a{display:inline-flex;}
+  .badge-row img{display:block;height:22px;}
