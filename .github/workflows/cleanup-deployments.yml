@@ -1,0 +1,135 @@
+name: Cleanup old deployments
+ 
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows:
+      - Deploy GitHub Pages
+    types:
+      - completed
+ 
+jobs:
+  cleanup:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+ 
+    permissions:
+      deployments: write
+ 
+    steps:
+      - name: Cleanup old GitHub Pages deployments
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+ 
+        run: |
+          echo "Fetching GitHub Pages deployments. ."
+ 
+          deployments=""
+ 
+
+          # fetching deployments
+
+          for page in $(seq 1 100); do
+            page_data=$(gh api \
+              "repos/${{ github.repository }}/deployments?environment=github-pages&per_page=100&page=$page")
+ 
+            count=$(echo "$page_data" | jq 'length')
+ 
+            if [ "$count" -eq 0 ]; then
+              break
+            fi
+ 
+            ids=$(echo "$page_data" | jq -r '.[].id')
+ 
+            if [ -z "$deployments" ]; then
+              deployments="$ids"
+            else
+              deployments="$deployments"$'\n'"$ids"
+            fi
+ 
+            if [ "$count" -lt 100 ]; then
+              break
+            fi
+          done
+ 
+          if [ -z "$deployments" ]; then
+            echo "No deployments found."
+            exit 0
+          fi
+ 
+          echo ""
+          echo "Checking deployments from newest to oldest.."
+          echo ""
+ 
+          latest_successful=""
+ 
+          # get newest deployment with successful status.
+          while IFS= read -r deployment_id; do
+            echo "Checking deployment: $deployment_id"
+ 
+            if gh api \
+              --paginate \
+              "repos/${{ github.repository }}/deployments/$deployment_id/statuses?per_page=100" \
+              --jq '.[] | select(.state == "success") | .state' \
+              | grep -q "success"; then
+ 
+              latest_successful="$deployment_id"
+ 
+              echo "Latest successful deployment found: $deployment_id"
+ 
+              break
+            fi
+ 
+          done <<< "$deployments"
+ 
+
+          if [ -z "$latest_successful" ]; then
+            echo ""
+            echo "theres no successful deployment found, nothing to delete"
+            exit 0
+          fi
+ 
+          delete_old=false
+ 
+          while IFS= read -r deployment_id; do
+ 
+
+            if [ "$deployment_id" = "$latest_successful" ]; then
+              delete_old=true
+              continue
+            fi
+ 
+            # keep newestt deployments stay untouched
+            if [ "$delete_old" = false ]; then
+              echo "Keeping newer deployment: $deployment_id"
+              continue
+            fi
+ 
+            echo "Attempting to delete old deployment: $deployment_id"
+ 
+
+            if ! gh api \
+              --method POST \
+              "repos/${{ github.repository }}/deployments/$deployment_id/statuses" \
+              -f state=inactive > /dev/null; then
+ 
+              echo "Could not mark deployment as inactive: $deployment_id"
+              echo "Leaving it untouched."
+              continue
+            fi
+
+            if gh api \
+              --method DELETE \
+              "repos/${{ github.repository }}/deployments/$deployment_id" > /dev/null; then
+ 
+              echo "Successfully deleted deployment: $deployment_id"
+ 
+            else
+ 
+              echo "Could not delete deployment: $deployment_id"
+ 
+            fi
+ 
+          done <<< "$deployments"
+ 
+          echo "Cleanup complete."

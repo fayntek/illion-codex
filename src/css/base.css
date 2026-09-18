@@ -1,8 +1,8 @@
 :root{
     /* surfacs */
-    --bg:#0a0b0d;
-    --surface:#131519;
-    --surface-2:#191c21;
+    --bg:#0a0b0d;	/*#0a0b0d*/ /*#030303*/
+    --surface:#131519;	/*#131519*/ /*#0A0A0A*/
+    --surface-2:#191c21;/*#191c21*/ /*#222222*/
     --surface-3:#20242b;
 
     /* borders */
